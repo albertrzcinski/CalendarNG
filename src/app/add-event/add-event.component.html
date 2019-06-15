@@ -1,0 +1,71 @@
+<div>
+  <!-- TODO add required fill the gap (confirm) -->
+
+  <input placeholder="Title" type="text" size="30" pInputText [(ngModel)]="title" />
+
+  <br><br>
+  <!-- TODO(jesli miesiac nie ma 31) -->
+  <p>From :</p>
+  <p-spinner [inputStyle]="{'margin-left': '5px'}" size="10" [(ngModel)]="spinnerDayStart" [min]="1" [max]="31" ></p-spinner>
+  <span [ngStyle]="{'margin-right': '10px'}"></span>
+  <mat-form-field>
+    <mat-label>Select a month</mat-label>
+    <mat-select [(value)]="selectedMonthStart">
+      <mat-option>None</mat-option>
+      <mat-option value="01">January</mat-option>
+      <mat-option value="02">February</mat-option>
+      <mat-option value="03">March</mat-option>
+      <mat-option value="04">April</mat-option>
+      <mat-option value="05">May</mat-option>
+      <mat-option value="06">June</mat-option>
+      <mat-option value="07">July</mat-option>
+      <mat-option value="08">August</mat-option>
+      <mat-option value="09">September</mat-option>
+      <mat-option value="10">October</mat-option>
+      <mat-option value="11">November</mat-option>
+      <mat-option value="12">December</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p-spinner [inputStyle]="{'margin-left': '10px'}" size="10" [(ngModel)]="spinnerYearStart" [min]="2000" [max]="2030" ></p-spinner>
+
+  <br>
+
+  <span>Time </span>
+  <p-calendar [(ngModel)]="timeStart" [timeOnly]="true"></p-calendar>
+
+  <br><br><br>
+  <!-- TODO start from param to 2030 -->
+  <p>To :</p>
+  <p-spinner [inputStyle]="{'margin-left': '5px'}" size="10" [(ngModel)]="spinnerDayEnd" [min]="1" [max]="31" ></p-spinner>
+  <span [ngStyle]="{'margin-right': '10px'}"></span>
+  <mat-form-field>
+    <mat-label>Select a month</mat-label>
+    <mat-select [(value)]="selectedMonthEnd">
+      <mat-option>None</mat-option>
+      <mat-option value="01">January</mat-option>
+      <mat-option value="02">February</mat-option>
+      <mat-option value="03">March</mat-option>
+      <mat-option value="04">April</mat-option>
+      <mat-option value="05">May</mat-option>
+      <mat-option value="06">June</mat-option>
+      <mat-option value="07">July</mat-option>
+      <mat-option value="08">August</mat-option>
+      <mat-option value="09">September</mat-option>
+      <mat-option value="10">October</mat-option>
+      <mat-option value="11">November</mat-option>
+      <mat-option value="12">December</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <p-spinner [inputStyle]="{'margin-left': '10px'}" size="10" [(ngModel)]="spinnerYearEnd" [min]="2000" [max]="2030" ></p-spinner>
+
+  <br>
+
+  <span>Time </span>
+  <p-calendar [(ngModel)]="timeEnd" [timeOnly]="true"></p-calendar>
+  <br>
+  <!-- TODO change save to change & redirect to /home -->
+  <button pButton type="button" label="Save" (click)="addEvent()" class="ui-button-rounded"></button>
+  <button pButton type="button" label="Cancel" (click)="cancel()" class="ui-button-rounded"></button>
+</div>

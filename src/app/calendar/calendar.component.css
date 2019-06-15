@@ -1,0 +1,9 @@
+.full-cal, .cal{
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+}
+
+.cal{
+  margin-bottom: 10px;
+}

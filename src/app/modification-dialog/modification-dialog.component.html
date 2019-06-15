@@ -1,0 +1,7 @@
+<p-dialog header="Modification" [style]="{width: '50vw'}" [(visible)]="display" [modal]="true" [responsive]="true">
+  <p style="padding: 5px"> <i class="pi pi-calendar"></i> <span style="padding-left: 10px">What do you want to do ?</span></p>
+  <p-footer>
+    <button type="button" pButton icon="pi pi-calendar-minus" label="Change event" (click)="changeEvent()"></button>
+    <button type="button" pButton icon="pi pi-calendar-times" label="Delete event" (click)="deleteEvent()"></button>
+  </p-footer>
+</p-dialog>
