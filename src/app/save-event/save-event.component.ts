@@ -65,6 +65,8 @@ export class SaveEventComponent implements OnInit {
       this.spinnerDayEnd = this.spinnerDayStart;
       this.selectedMonthEnd = this.selectedMonthStart;
       this.spinnerYearEnd = this.spinnerYearStart;
+      this.timeStart = new Date(this.eventService.start);
+      this.timeEnd = this.timeStart;
     }
   }
 
@@ -75,59 +77,96 @@ export class SaveEventComponent implements OnInit {
   }
 
   addEvent() {
-    const sDS: number = +this.spinnerDayStart;
-    const sDE: number = +this.spinnerDayEnd;
+      const sDS: number = +this.spinnerDayStart;
+      const sDE: number = +this.spinnerDayEnd;
 
-    let sDSS = '';
-    let sDES = '';
+      let sDSS = '';
+      let sDES = '';
 
-    if (sDS < 10) {sDSS = '0' + sDS; } else {sDSS = sDS.toString(); }
-    if (sDE < 10) {sDES = '0' + sDE; } else {sDES = sDE.toString(); }
-
-    if (this.timeStart) {
-      if (this.timeEnd) {
-        const tsH = this.timeStart.getHours();
-        const tsM = this.timeStart.getMinutes();
-        const teH = this.timeEnd.getHours();
-        const teM = this.timeEnd.getMinutes();
-
-        let tsHS = '';
-        let tsMS = '';
-        let teHS = '';
-        let teMS = '';
-
-        if (tsH < 10) { tsHS = '0' + tsH; } else {tsHS = tsH.toString(); }
-        if (tsM < 10) { tsMS = '0' + tsM; }  else {tsMS = tsM.toString(); }
-        if (teH < 10) { teHS = '0' + teH; }  else {teHS = teH.toString(); }
-        if (teM < 10) { teMS = '0' + teM; }  else {teMS = teM.toString(); }
-
-        this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS +
-          'T' + tsHS + ':' + tsMS + ':' + '00';
-        this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES +
-          'T' + teHS + ':' + teMS + ':' + '00';
+      if (sDS < 10) {
+        sDSS = '0' + sDS;
+      } else {
+        sDSS = sDS.toString();
       }
-    } else {
-      this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS;
-      this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES;
-    }
+      if (sDE < 10) {
+        sDES = '0' + sDE;
+      } else {
+        sDES = sDE.toString();
+      }
 
+      if (this.timeStart) {
+        if (this.timeEnd) {
+          const tsH = this.timeStart.getHours();
+          const tsM = this.timeStart.getMinutes();
+          const teH = this.timeEnd.getHours();
+          const teM = this.timeEnd.getMinutes();
 
-    this.eventService.addEvent(this.model).subscribe(
-      res => {
-        if (this.addFlag) {
-          this.eventService.setAddFlag(true);
-        } else {
-          this.eventService.setChangeFlag(true);
+          let tsHS = '';
+          let tsMS = '';
+          let teHS = '';
+          let teMS = '';
+
+          if (tsH < 10) {
+            tsHS = '0' + tsH;
+          } else {
+            tsHS = tsH.toString();
+          }
+          if (tsM < 10) {
+            tsMS = '0' + tsM;
+          } else {
+            tsMS = tsM.toString();
+          }
+          if (teH < 10) {
+            teHS = '0' + teH;
+          } else {
+            teHS = teH.toString();
+          }
+          if (teM < 10) {
+            teMS = '0' + teM;
+          } else {
+            teMS = teM.toString();
+          }
+
+          this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS +
+            'T' + tsHS + ':' + tsMS + ':' + '00';
+
+          this.dateStart = new Date(this.model.start);
+
+          this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES +
+            'T' + teHS + ':' + teMS + ':' + '00';
+
+          this.dateEnd = new Date(this.model.end);
         }
-        this.router.navigateByUrl('/home');
-        },
-      err => {
-        this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while saving event!'});
+      } else {
+        this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS;
+        this.dateStart = new Date(this.model.start);
+        this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES;
+        this.dateEnd = new Date(this.model.end);
+      }
+
+      if (this.dateStart > this.dateEnd) {
+        this.messageService.add({severity: 'warn', summary: 'Warning', detail: 'Change the end date or time of event !'});
         setTimeout(() => {
           this.messageService.clear();
         }, 5000);
+      } else {
+          this.eventService.addEvent(this.model).subscribe(
+          res => {
+            if (this.addFlag) {
+              this.eventService.setAddFlag(true);
+            } else {
+              this.eventService.setChangeFlag(true);
+            }
+            this.router.navigateByUrl('/home');
+          },
+          err => {
+            this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while saving event!'});
+            setTimeout(() => {
+              this.messageService.clear();
+            }, 5000);
+            }
+          );
       }
-    );
   }
 
   cancel() {

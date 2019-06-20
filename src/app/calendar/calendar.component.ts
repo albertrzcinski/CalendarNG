@@ -7,6 +7,8 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
 import {EventService} from '../services/event.service';
 import {HttpClient} from '@angular/common/http';
+import {compareLogSummaries} from '@angular/core/src/render3/styling/class_and_style_bindings';
+import {callNgModuleLifecycle} from '@angular/core/src/view/ng_module';
 
 @Component({
   selector: 'app-calendar',
@@ -41,9 +43,17 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         right: 'dayGridMonth,timeGridWeek,timeGridDay,timeGridYear'
       },
       dateClick: (e) => {
+        let tmp: string;
+        if (e.dateStr.length > 10) {
+          tmp = e.dateStr.slice(0, 10) + ' at ' + e.dateStr.slice(11, 19);
+        } else {
+          tmp = e.dateStr;
+        }
+        this.eventService.start = e.date;
+
         this.confirmationService.confirm({
           key: 'date',
-          message: 'Would you like to add an event to ' + e.dateStr + '?',
+          message: 'Would you like to add an event to ' + tmp + ' ?',
           header: 'Confirmation',
           icon: 'pi pi-calendar-plus',
           accept: () => {
