@@ -6,11 +6,11 @@ import {HttpClient} from '@angular/common/http';
 import {MessageService} from 'primeng/api';
 
 @Component({
-  selector: 'app-add-event',
-  templateUrl: './add-event.component.html',
-  styleUrls: ['./add-event.component.css']
+  selector: 'app-save-event',
+  templateUrl: './save-event.component.html',
+  styleUrls: ['./save-event.component.css']
 })
-export class AddEventComponent implements OnInit {
+export class SaveEventComponent implements OnInit {
 
   model: EventViewModel = {
     id: null,

@@ -15,7 +15,7 @@ import {ConfirmationService, MessageService} from 'primeng/api';
 import { ModificationDialogComponent } from './modification-dialog/modification-dialog.component';
 import {FormsModule} from '@angular/forms';
 import {AppRouting} from './app.routes';
-import { AddEventComponent } from './add-event/add-event.component';
+import { SaveEventComponent } from './save-event/save-event.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import {EventService} from './services/event.service';
 import {MatSelectModule} from '@angular/material/select';
@@ -25,7 +25,7 @@ import {HttpClientModule} from '@angular/common/http';
   declarations: [
     AppComponent,
     ModificationDialogComponent,
-    AddEventComponent,
+    SaveEventComponent,
     CalendarComponent
   ],
   imports: [

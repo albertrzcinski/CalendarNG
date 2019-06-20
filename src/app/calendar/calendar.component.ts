@@ -47,7 +47,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
           header: 'Confirmation',
           icon: 'pi pi-calendar-plus',
           accept: () => {
-            this.router.navigateByUrl('/add/' + e.dateStr);
+            this.router.navigateByUrl('/save/' + e.dateStr);
           },
           reject: () => {
             // this.msgs = [{severity: 'info', summary: 'Rejected', detail: 'You have rejected....'}];

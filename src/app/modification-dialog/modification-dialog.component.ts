@@ -25,7 +25,7 @@ export class ModificationDialogComponent implements OnInit {
   }
 
   changeEvent() {
-    this.router.navigateByUrl('/add/' + this.event.id);
+    this.router.navigateByUrl('/save/' + this.event.id);
     this.eventService.title = this.event.title;
     this.eventService.start = this.event.start;
     this.eventService.end = this.event.end;

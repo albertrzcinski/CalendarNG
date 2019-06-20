@@ -1,7 +1,7 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {AddEventComponent} from './add-event/add-event.component';
 import {CalendarComponent} from './calendar/calendar.component';
+import {SaveEventComponent} from './save-event/save-event.component';
 
 const appRoutes: Routes = [
   {
@@ -18,8 +18,8 @@ const appRoutes: Routes = [
     component: AppComponent
   },*/
   {
-    path: 'add/:eventId',
-    component: AddEventComponent
+    path: 'save/:eventId',
+    component: SaveEventComponent
   }
 ];
 
