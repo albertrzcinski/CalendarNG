@@ -16,8 +16,6 @@ export class ModificationDialogComponent implements OnInit {
 
   event: any;
 
-  // events: any[];
-
   ngOnInit() {
   }
 
@@ -31,21 +29,26 @@ export class ModificationDialogComponent implements OnInit {
     this.eventService.title = this.event.title;
     this.eventService.start = this.event.start;
     this.eventService.end = this.event.end;
-    // console.log(this.event.start);
-   // console.log(this.event.end);
   }
 
   deleteEvent() {
-    /*this.events = this.eventService.events;
-    this.events = this.events.filter( e => e !== this.event);
-    this.eventService.events = {...this.events};*/
+    this.eventService.removeEvent(this.event.id).subscribe(
+      res => {
+        this.event.remove();
+        this.display = false;
 
-    this.event.remove();
-    this.display = false;
-
-    this.messageService.add({severity: 'info', summary: 'Deleted', detail: 'You have deleted an event!'});
-    setTimeout(() => {
-      this.messageService.clear();
-    }, 5000);
+        this.messageService.add({severity: 'info', summary: 'Deleted', detail: 'You have deleted an event!'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 5000);
+      },
+      err => {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while deleting event!'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 5000);
+        console.log('An error while deleting event.');
+      }
+    );
   }
 }

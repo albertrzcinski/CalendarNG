@@ -1,65 +1,51 @@
 import { Injectable } from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {EventViewModel} from '../add-event/add-event.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
-
-  events: any[];
+  private URL = 'http://localhost:8080/events';
+  private ALL_EVENTS_URL = `${this.URL}\\all`;
+  private SAVE_EVENT_URL = `${this.URL}\\save`;
+  private REMOVE_EVENT_URL = `${this.URL}\\remove\\`;
 
   title: string;
   start: Date;
   end: Date;
 
-  added = false;
-  changed = false;
+  addFlag = false;
+  changeFlag = false;
 
-  // TODO zmieniac id za kazdym dodaniem
-  // id: string;
+  constructor(private http: HttpClient) {}
 
-  constructor() {
-    this.events = [
-      {
-        id: '1',
-        title: 'All Day Event',
-        start: '2019-05-01'
-      },
-      {
-        id: '2',
-        title: 'Long Event',
-        start: '2019-05-07',
-        end: '2019-05-10'
-      },
-      {
-        id: '3',
-        title: 'Repeating Event',
-        start: '2019-05-09T16:00:00'
-      },
-      {
-        id: '4',
-        title: 'Repeating Event',
-        start: '2019-05-16T16:00:00'
-      },
-      {
-        id: '5',
-        title: 'Lecture',
-        start: '2019-05-11T13:30:00',
-        end: '2019-05-11T15:00:00',
-      }
-    ];
+  getAllEvents(): Observable<any[]> {
+    return this.http.get<any[]>(this.ALL_EVENTS_URL);
   }
 
-  getEvents(): any[] {
-    return this.events;
+  addEvent(event: EventViewModel): Observable<any> {
+    return this.http.post(this.SAVE_EVENT_URL, event);
   }
 
-  addEvent(pTitle: string, pStart: string, pEnd: string) {
-    this.events = [...this.events, {
-        // id = ..
-        title: pTitle,
-        start: pStart,
-        end: pEnd
-      }];
-    }
+  removeEvent(id: string): Observable<any> {
+    return this.http.delete(this.REMOVE_EVENT_URL + id);
+  }
+
+  getAddFlag(): boolean {
+    return this.addFlag;
+  }
+
+  setAddFlag(flag: boolean): void {
+    this.addFlag = flag;
+  }
+
+  getChangeFlag(): boolean {
+    return this.changeFlag;
+  }
+
+  setChangeFlag(value: boolean) {
+    this.changeFlag = value;
+  }
 }
-

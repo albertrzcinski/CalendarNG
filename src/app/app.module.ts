@@ -19,6 +19,7 @@ import { AddEventComponent } from './add-event/add-event.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import {EventService} from './services/event.service';
 import {MatSelectModule} from '@angular/material/select';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {MatSelectModule} from '@angular/material/select';
     InputTextModule,
     SpinnerModule,
     DropdownModule,
-    MatSelectModule
+    MatSelectModule,
+    HttpClientModule
   ],
   providers: [ConfirmationService, MessageService, EventService],
   bootstrap: [AppComponent]

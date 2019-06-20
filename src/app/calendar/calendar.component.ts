@@ -6,6 +6,7 @@ import {FullCalendar} from 'primeng/fullcalendar';
 import {ConfirmationService, MessageService} from 'primeng/api';
 import {Router} from '@angular/router';
 import {EventService} from '../services/event.service';
+import {HttpClient} from '@angular/common/http';
 
 @Component({
   selector: 'app-calendar',
@@ -28,7 +29,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
               private router: Router, private  eventService: EventService) {}
 
   ngOnInit() {
-    this.events = this.eventService.getEvents();
+    this.getAllEvents();
 
     this.options = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -39,7 +40,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         center: 'title',
         right: 'dayGridMonth,timeGridWeek,timeGridDay,timeGridYear'
       },
-      dateClick: (e) =>  {
+      dateClick: (e) => {
         this.confirmationService.confirm({
           key: 'date',
           message: 'Would you like to add an event to ' + e.dateStr + '?',
@@ -55,24 +56,16 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       },
       eventClick: (e) => {
         this.modDialog.showDialog(e.event);
-        // TODO make service for events and id then send to modDialog
-        // console.log(e.event.id);
-        // console.log(this.events);
-
       },
       views: {
         timeGridYear: {
           type: 'dayGrid',
-          duration: { year: 1 },
+          duration: {year: 1},
           buttonText: 'year',
         }
       }
     };
   }
-
-  // TODO ustawic to
-  /*console.log(this.dateValue);
-  console.log(this.fullCal.getCalendar().getDate());*/
 
   viewMonth(): void {
     this.fullCal.getCalendar().gotoDate(this.dateValue);
@@ -80,20 +73,33 @@ export class CalendarComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-      if (this.eventService.added) {
+      if (this.eventService.getAddFlag()) {
         this.messageService.add({severity: 'success', summary: 'Added', detail: 'You have added an event!'});
         setTimeout(() => {
           this.messageService.clear();
         }, 5000);
-        this.eventService.added = false;
+        this.eventService.setAddFlag(false);
       }
-      if (this.eventService.changed) {
+      if (this.eventService.getChangeFlag()) {
         this.messageService.add({severity: 'success', summary: 'Changed', detail: 'You have changed an event!'});
         setTimeout(() => {
           this.messageService.clear();
         }, 5000);
-        this.eventService.changed = false;
+        this.eventService.setChangeFlag(false);
       }
     }, 100);
+  }
+
+  public getAllEvents() {
+    this.eventService.getAllEvents().subscribe(
+      res => {
+        this.events = res;
+      },
+      err => {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while fetching events!'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 5000);
+    });
   }
 }

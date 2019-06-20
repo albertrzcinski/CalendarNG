@@ -6,7 +6,6 @@ import {CalendarComponent} from './calendar/calendar.component';
 const appRoutes: Routes = [
   {
     path: 'home',
-    // TODO create main(home) component (split components from calendar)
     component: CalendarComponent
   },
   {
@@ -28,7 +27,8 @@ const appRoutes: Routes = [
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: false }
+      { enableTracing: false,
+      onSameUrlNavigation: 'reload'}
     )
   ],
   exports: [

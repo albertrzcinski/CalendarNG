@@ -2,6 +2,8 @@ import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventService} from '../services/event.service';
 import {MatFormFieldAppearance} from '@angular/material';
+import {HttpClient} from '@angular/common/http';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-add-event',
@@ -10,14 +12,17 @@ import {MatFormFieldAppearance} from '@angular/material';
 })
 export class AddEventComponent implements OnInit {
 
+  model: EventViewModel = {
+    id: null,
+    title: '',
+    start: '',
+    end: ''
+  };
+
   param = '';
 
   dateStart: Date;
   dateEnd: Date;
-
-  title = '';
-  start = '';
-  end = '';
 
   spinnerDayStart: string;
   selectedMonthStart: string;
@@ -30,14 +35,16 @@ export class AddEventComponent implements OnInit {
   timeStart: Date;
   timeEnd: Date;
 
-  // true - add, false - change
-  aorch = true;
+  // true - Add event, false - Change event
+  addFlag = true;
 
-  constructor(private route: ActivatedRoute, private eventService: EventService, private router: Router) {}
+  constructor(private route: ActivatedRoute, private eventService: EventService,
+              private router: Router, private messageService: MessageService) {}
 
   setupComponent(someParam) {
     if (someParam.toString().search('-') === -1) {
-      this.title = this.eventService.title;
+      this.model.id = someParam;
+      this.model.title = this.eventService.title;
       this.dateStart = new Date(this.eventService.start);
       this.dateEnd = new Date(this.eventService.end);
       this.spinnerDayStart = this.dateStart.getDate().toString();
@@ -48,7 +55,7 @@ export class AddEventComponent implements OnInit {
       this.spinnerYearEnd = this.dateEnd.getFullYear().toString();
       this.timeStart = this.dateStart;
       this.timeEnd = this.dateEnd;
-      this.aorch = false;
+      this.addFlag = false;
     } else {
       this.param = someParam;
       this.dateStart = new Date(this.param);
@@ -59,23 +66,12 @@ export class AddEventComponent implements OnInit {
       this.selectedMonthEnd = this.selectedMonthStart;
       this.spinnerYearEnd = this.spinnerYearStart;
     }
-
-
   }
 
   ngOnInit() {
-    // this.param = this.route.snapshot.paramMap.get('eventId');
     this.route.params.subscribe(params => {
       this.setupComponent( params.eventId );
     });
-    /*this.route.paramMap.forEach(({params}: Params) => {
-      this.param = params['eventId']
-    })*/
-    /*this.route.paramMap.subscribe(params => {
-      this.param = params.get('eventId');
-    })*/
-
-    // this.eventService.addEvent();
   }
 
   addEvent() {
@@ -92,8 +88,8 @@ export class AddEventComponent implements OnInit {
       if (this.timeEnd) {
         const tsH = this.timeStart.getHours();
         const tsM = this.timeStart.getMinutes();
-        const teH = this.timeStart.getHours();
-        const teM = this.timeStart.getMinutes();
+        const teH = this.timeEnd.getHours();
+        const teM = this.timeEnd.getMinutes();
 
         let tsHS = '';
         let tsMS = '';
@@ -105,26 +101,43 @@ export class AddEventComponent implements OnInit {
         if (teH < 10) { teHS = '0' + teH; }  else {teHS = teH.toString(); }
         if (teM < 10) { teMS = '0' + teM; }  else {teMS = teM.toString(); }
 
-        this.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS +
+        this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS +
           'T' + tsHS + ':' + tsMS + ':' + '00';
-        this.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES +
+        this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES +
           'T' + teHS + ':' + teMS + ':' + '00';
       }
     } else {
-      this.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS;
-      this.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES;
+      this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS;
+      this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES;
     }
-/*    console.log(this.title);
-    console.log('start ' + this.start);
-    console.log('end ' + this.end);*/
-    this.eventService.addEvent(this.title, this.start, this.end);
 
-    // TODO change to method getAdded()
-    if (this.aorch) { this.eventService.added = true; } else { this.eventService.changed = true; }
-    this.router.navigateByUrl('/home');
+
+    this.eventService.addEvent(this.model).subscribe(
+      res => {
+        if (this.addFlag) {
+          this.eventService.setAddFlag(true);
+        } else {
+          this.eventService.setChangeFlag(true);
+        }
+        this.router.navigateByUrl('/home');
+        },
+      err => {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while saving event!'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 5000);
+      }
+    );
   }
 
   cancel() {
     this.router.navigateByUrl('/home');
   }
+}
+
+export interface EventViewModel {
+  id: number;
+  title: string;
+  start: string;
+  end: string;
 }

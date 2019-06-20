@@ -1,10 +1,10 @@
 <div>
   <!-- TODO add required fill the gap (confirm) -->
 
-  <input placeholder="Title" type="text" size="30" pInputText [(ngModel)]="title" />
+  <input placeholder="Title" type="text" size="30" pInputText [(ngModel)]="model.title" />
 
   <br><br>
-  <!-- TODO(jesli miesiac nie ma 31) -->
+  <!-- TODO what if month not have 31 days -->
   <p>From :</p>
   <p-spinner [inputStyle]="{'margin-left': '5px'}" size="10" [(ngModel)]="spinnerDayStart" [min]="1" [max]="31" ></p-spinner>
   <span [ngStyle]="{'margin-right': '10px'}"></span>
@@ -65,7 +65,6 @@
   <span>Time </span>
   <p-calendar [(ngModel)]="timeEnd" [timeOnly]="true"></p-calendar>
   <br>
-  <!-- TODO change save to change & redirect to /home -->
   <button pButton type="button" label="Save" (click)="addEvent()" class="ui-button-rounded"></button>
   <button pButton type="button" label="Cancel" (click)="cancel()" class="ui-button-rounded"></button>
 </div>
