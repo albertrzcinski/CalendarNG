@@ -25,10 +25,21 @@ export class ModificationDialogComponent implements OnInit {
   }
 
   changeEvent() {
-    this.router.navigateByUrl('/save/' + this.event.id);
-    this.eventService.title = this.event.title;
-    this.eventService.start = this.event.start;
-    this.eventService.end = this.event.end;
+    this.eventService.getEventById(this.event.id).subscribe(
+      res => {
+        this.eventService.title = res.title;
+        this.eventService.start = res.start;
+        if (res.end == null) { res.end = res.start; }
+        this.eventService.end = res.end;
+        this.router.navigateByUrl('/save/' + this.event.id);
+      },
+      err => {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while fetching event!'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 5000);
+      }
+    );
   }
 
   deleteEvent() {
@@ -47,7 +58,6 @@ export class ModificationDialogComponent implements OnInit {
         setTimeout(() => {
           this.messageService.clear();
         }, 5000);
-        console.log('An error while deleting event.');
       }
     );
   }

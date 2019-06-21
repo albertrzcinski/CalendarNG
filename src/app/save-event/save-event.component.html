@@ -1,14 +1,23 @@
 <p-messages [value]="msgs"></p-messages>
-
+<form name="form" #f="ngForm" (submit)="f.form.valid && addEvent()" novalidate>
+<div class="main-div">
 <div>
-  <!-- TODO add required fill the gap (confirm) -->
+  <input placeholder="Title" id="title" name="title" type="text" size="30" pInputText [(ngModel)]="model.title"
+         #title="ngModel" [ngClass]="{'is-invalid': f.submitted && title.invalid}" required/>
 
-  <input placeholder="Title" type="text" size="30" pInputText [(ngModel)]="model.title" />
+  <div *ngIf="f.submitted && title.invalid" class="invalid-input">
+    <div *ngIf="title.errors?.required" class="invalid-input"> This field is required </div>
+  </div>
+</div>
 
-  <br><br>
-  <!-- TODO what if month not have 31 days -->
+  <div class="switch-div">
+    <span style="margin-right: 20px">All day</span>
+    <p-inputSwitch [(ngModel)]="checkedFlag" name="inputSwitch"></p-inputSwitch>
+  </div>
+  <!-- TODO what if month not have 31 days (ngIF)-->
   <p>From :</p>
-  <p-spinner [inputStyle]="{'margin-left': '5px'}" size="10" [(ngModel)]="spinnerDayStart" [min]="1" [max]="31" ></p-spinner>
+  <p-spinner [inputStyle]="{'margin-left': '5px'}"
+             size="10" [(ngModel)]="spinnerDayStart" [min]="1" [max]="31" name="spinnerday"></p-spinner>
   <span [ngStyle]="{'margin-right': '10px'}"></span>
   <mat-form-field>
     <mat-label>Select a month</mat-label>
@@ -29,17 +38,25 @@
     </mat-select>
   </mat-form-field>
 
-  <p-spinner [inputStyle]="{'margin-left': '10px'}" size="10" [(ngModel)]="spinnerYearStart" [min]="2000" [max]="2030" ></p-spinner>
+  <p-spinner [inputStyle]="{'margin-left': '10px'}" size="10" [(ngModel)]="spinnerYearStart"
+             [min]="2000" [max]="2030" name="spinneryear"></p-spinner>
 
   <br>
-
+<div *ngIf="!checkedFlag">
   <span>Time </span>
-  <p-calendar [(ngModel)]="timeStart" [timeOnly]="true"></p-calendar>
+  <p-calendar id="timeS" name="timeS" [(ngModel)]="timeStart"
+              #timeS="ngModel"[timeOnly]="true" [ngClass]="{'is-invalid': f.submitted && timeS.invalid}"
+              required ></p-calendar>
 
-  <br><br><br>
+  <div *ngIf="f.submitted && timeS.invalid" class="invalid-input">
+    <div *ngIf="timeS.errors?.required" class="invalid-input"> This field is required </div>
+  </div>
+</div>
+  <br>
   <!-- TODO start from param to 2030 -->
   <p>To :</p>
-  <p-spinner [inputStyle]="{'margin-left': '5px'}" size="10" [(ngModel)]="spinnerDayEnd" [min]="1" [max]="31" ></p-spinner>
+  <p-spinner [inputStyle]="{'margin-left': '5px'}" size="10" [(ngModel)]="spinnerDayEnd"
+             [min]="1" [max]="31" name="spinnerdaye"></p-spinner>
   <span [ngStyle]="{'margin-right': '10px'}"></span>
   <mat-form-field>
     <mat-label>Select a month</mat-label>
@@ -60,13 +77,23 @@
     </mat-select>
   </mat-form-field>
 
-  <p-spinner [inputStyle]="{'margin-left': '10px'}" size="10" [(ngModel)]="spinnerYearEnd" [min]="2000" [max]="2030" ></p-spinner>
+  <p-spinner [inputStyle]="{'margin-left': '10px'}" size="10" [(ngModel)]="spinnerYearEnd"
+             [min]="2000" [max]="2030" name="spinneryeare"></p-spinner>
 
   <br>
 
+  <div *ngIf="!checkedFlag">
   <span>Time </span>
-  <p-calendar [(ngModel)]="timeEnd" [timeOnly]="true"></p-calendar>
-  <br>
-  <button pButton type="button" label="Save" (click)="addEvent()" class="ui-button-rounded"></button>
+  <p-calendar  id="timeE" name="timeE" [(ngModel)]="timeEnd"
+              #timeE="ngModel" [timeOnly]="true" [ngClass]="{'is-invalid': f.submitted && timeE.invalid}"
+              required ></p-calendar>
+
+  <div *ngIf="f.submitted && timeE.invalid" class="invalid-input">
+    <div *ngIf="timeE.errors?.required" class="invalid-input"> This field is required </div>
+  </div>
+  </div>
+
+  <button pButton type="submit" label="Save" class="ui-button-rounded"></button>
   <button pButton type="button" label="Cancel" (click)="cancel()" class="ui-button-rounded"></button>
 </div>
+</form>

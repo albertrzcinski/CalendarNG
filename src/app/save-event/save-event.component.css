@@ -1,8 +1,18 @@
 p, span{
-  font-family: 'Gugi', cursive;
+  font-size: 18px;
+  font-family: 'Brie Serif', cursive;
 }
 
-div{
+.switch-div{
+  margin-top: 20px;
+}
+
+.invalid-input {
+  font-size: small;
+  color: red;
+}
+
+.main-div{
   text-align: center;
   margin-top: 20px;
 }

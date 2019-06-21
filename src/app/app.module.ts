@@ -20,6 +20,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import {EventService} from './services/event.service';
 import {MatSelectModule} from '@angular/material/select';
 import {HttpClientModule} from '@angular/common/http';
+import {InputSwitchModule} from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {HttpClientModule} from '@angular/common/http';
     SpinnerModule,
     DropdownModule,
     MatSelectModule,
-    HttpClientModule
+    HttpClientModule,
+    InputSwitchModule
   ],
   providers: [ConfirmationService, MessageService, EventService],
   bootstrap: [AppComponent]

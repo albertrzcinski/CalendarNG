@@ -1,8 +1,6 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventService} from '../services/event.service';
-import {MatFormFieldAppearance} from '@angular/material';
-import {HttpClient} from '@angular/common/http';
 import {MessageService} from 'primeng/api';
 
 @Component({
@@ -38,6 +36,8 @@ export class SaveEventComponent implements OnInit {
   // true - Add event, false - Change event
   addFlag = true;
 
+  checkedFlag = false;
+
   constructor(private route: ActivatedRoute, private eventService: EventService,
               private router: Router, private messageService: MessageService) {}
 
@@ -56,6 +56,9 @@ export class SaveEventComponent implements OnInit {
       this.timeStart = this.dateStart;
       this.timeEnd = this.dateEnd;
       this.addFlag = false;
+      if (this.eventService.eventAllDay) {
+        this.checkedFlag = true;
+      }
     } else {
       this.param = someParam;
       this.dateStart = new Date(this.param);
@@ -94,49 +97,54 @@ export class SaveEventComponent implements OnInit {
         sDES = sDE.toString();
       }
 
+      if (this.checkedFlag) {
+       this.timeStart = null;
+       this.timeEnd = null;
+    }
+
       if (this.timeStart) {
-        if (this.timeEnd) {
-          const tsH = this.timeStart.getHours();
-          const tsM = this.timeStart.getMinutes();
-          const teH = this.timeEnd.getHours();
-          const teM = this.timeEnd.getMinutes();
+          if (this.timeEnd) {
+            const tsH = this.timeStart.getHours();
+            const tsM = this.timeStart.getMinutes();
+            const teH = this.timeEnd.getHours();
+            const teM = this.timeEnd.getMinutes();
 
-          let tsHS = '';
-          let tsMS = '';
-          let teHS = '';
-          let teMS = '';
+            let tsHS = '';
+            let tsMS = '';
+            let teHS = '';
+            let teMS = '';
 
-          if (tsH < 10) {
-            tsHS = '0' + tsH;
-          } else {
-            tsHS = tsH.toString();
+            if (tsH < 10) {
+              tsHS = '0' + tsH;
+            } else {
+              tsHS = tsH.toString();
+            }
+            if (tsM < 10) {
+              tsMS = '0' + tsM;
+            } else {
+              tsMS = tsM.toString();
+            }
+            if (teH < 10) {
+              teHS = '0' + teH;
+            } else {
+              teHS = teH.toString();
+            }
+            if (teM < 10) {
+              teMS = '0' + teM;
+            } else {
+              teMS = teM.toString();
+            }
+
+            this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS +
+              'T' + tsHS + ':' + tsMS + ':' + '00';
+
+            this.dateStart = new Date(this.model.start);
+
+            this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES +
+              'T' + teHS + ':' + teMS + ':' + '00';
+
+            this.dateEnd = new Date(this.model.end);
           }
-          if (tsM < 10) {
-            tsMS = '0' + tsM;
-          } else {
-            tsMS = tsM.toString();
-          }
-          if (teH < 10) {
-            teHS = '0' + teH;
-          } else {
-            teHS = teH.toString();
-          }
-          if (teM < 10) {
-            teMS = '0' + teM;
-          } else {
-            teMS = teM.toString();
-          }
-
-          this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS +
-            'T' + tsHS + ':' + tsMS + ':' + '00';
-
-          this.dateStart = new Date(this.model.start);
-
-          this.model.end = this.spinnerYearEnd + '-' + this.selectedMonthEnd + '-' + sDES +
-            'T' + teHS + ':' + teMS + ':' + '00';
-
-          this.dateEnd = new Date(this.model.end);
-        }
       } else {
         this.model.start = this.spinnerYearStart + '-' + this.selectedMonthStart + '-' + sDSS;
         this.dateStart = new Date(this.model.start);

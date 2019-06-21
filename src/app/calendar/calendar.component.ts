@@ -9,6 +9,7 @@ import {EventService} from '../services/event.service';
 import {HttpClient} from '@angular/common/http';
 import {compareLogSummaries} from '@angular/core/src/render3/styling/class_and_style_bindings';
 import {callNgModuleLifecycle} from '@angular/core/src/view/ng_module';
+import {EventViewModel} from '../save-event/save-event.component';
 
 @Component({
   selector: 'app-calendar',
@@ -25,6 +26,13 @@ export class CalendarComponent implements OnInit, AfterViewInit {
   options: any;
 
   dateValue: Date = new Date();
+
+  model: EventViewModel = {
+    id: null,
+    title: '',
+    start: '',
+    end: ''
+  };
 
   constructor(private confirmationService: ConfirmationService,
               private messageService: MessageService,
@@ -66,6 +74,13 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       },
       eventClick: (e) => {
         this.modDialog.showDialog(e.event);
+        this.eventService.eventAllDay = e.event.allDay;
+      },
+      eventResize: (e) => {
+        this.saveEventChanging(e.event);
+      },
+      eventDrop: (e) => {
+        this.saveEventChanging(e.event);
       },
       views: {
         timeGridYear: {
@@ -111,5 +126,27 @@ export class CalendarComponent implements OnInit, AfterViewInit {
           this.messageService.clear();
         }, 5000);
     });
+  }
+
+  public saveEventChanging(event: any) {
+    this.model.id = event.id;
+    this.model.title = event.title;
+    this.model.start = event.start;
+    this.model.end = event.end;
+
+    this.eventService.addEvent(this.model).subscribe(
+      res => {
+        this.messageService.add({severity: 'success', summary: 'Changing', detail: 'You have changed an event!'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 5000);
+      },
+      err => {
+        this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while changing event!'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 5000);
+      }
+    );
   }
 }
