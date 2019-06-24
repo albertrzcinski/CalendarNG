@@ -1,0 +1,12 @@
+.form-container{
+  background-color: #f6fffd;
+  padding: 30px 60px;
+  margin-top: 10vh;
+  -webkit-box-shadow: 0px 3px 20px 8px rgba(183,180,222,1);
+  -moz-box-shadow: 0px 3px 20px 8px rgba(183,180,222,1);
+  box-shadow: 0px 3px 20px 8px rgba(183,180,222,1);
+}
+
+small{
+  color: red;
+}

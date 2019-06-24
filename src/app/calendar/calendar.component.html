@@ -4,11 +4,11 @@
 
 <p-messages [value]="msgs"></p-messages>
 
-<div [ngClass]="'cal'">
+<div class="cal">
   <p-calendar [(ngModel)]="dateValue" view="month" dateFormat="mm/yy" [yearNavigator]="true" yearRange="2000:2030"></p-calendar>
   <button pButton type="button" label="View" (click)="viewMonth()" class="ui-button-rounded" style="margin-left: 5px"></button>
 </div>
 
-<div [ngClass]="'full-cal'">
+<div class="full-cal">
   <p-fullCalendar #fc [events]="events" [options]="options">  </p-fullCalendar>
 </div>

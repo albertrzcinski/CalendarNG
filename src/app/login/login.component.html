@@ -1,0 +1,41 @@
+<p-messages [value]="msgs"></p-messages>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      <form #f="ngForm" class="form-container" (submit)="f.form.valid && loginUser()">
+        <h3>Account</h3>
+        <br>
+        <div class="form-group">
+          <label for="usernameInput">
+            <i class="fa fa-user"></i> Username
+          </label>
+          <input type="text" class="form-control" id="usernameInput" name="usernameInput"
+                 [(ngModel)]="model.username" #usernameInput="ngModel" placeholder="Enter username"
+                 [ngClass]="{'is-invalid': f.submitted && usernameInput.invalid, 'is-valid': f.submitted && usernameInput.valid}" required>
+
+          <div *ngIf="f.submitted && usernameInput.invalid" class="invalid-input">
+            <small *ngIf="usernameInput.errors?.required">This field is required</small>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="passwordInput">
+            <i class="fa fa-key"></i> Password
+          </label>
+          <input type="password" class="form-control" id="passwordInput" name="passwordInput"
+                 [(ngModel)]="model.password" #passwordInput="ngModel" placeholder="Enter password"
+                 [ngClass]="{'is-invalid': f.submitted && passwordInput.invalid, 'is-valid': f.submitted && usernameInput.valid}" required>
+
+          <div *ngIf="f.submitted && passwordInput.invalid" class="invalid-input">
+            <small *ngIf="passwordInput.errors?.required">This field is required</small>
+          </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-success btn-block" style="color: white">Sign in</button>
+        <br>
+        <small><a routerLink="/register">Create an account.</a> </small>
+      </form>
+    </div>
+    <div class="col-md-4"></div>
+  </div>
+</div>

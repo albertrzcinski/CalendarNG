@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {EventViewModel} from '../save-event/save-event.component';
 
@@ -7,11 +7,10 @@ import {EventViewModel} from '../save-event/save-event.component';
   providedIn: 'root'
 })
 export class EventService {
-  private URL = 'http://localhost:8080/events';
-  private ALL_EVENTS_URL = `${this.URL}\\all`;
-  private ONE_EVENT_BY_ID_URL = `${this.URL}\\`;
-  private SAVE_EVENT_URL = `${this.URL}\\save`;
-  private REMOVE_EVENT_URL = `${this.URL}\\remove\\`;
+  private ALL_EVENTS_URL = 'http://localhost:8080/events/all';
+  private ONE_EVENT_BY_ID_URL = 'http://localhost:8080/events/';
+  private SAVE_EVENT_URL = 'http://localhost:8080/events/save';
+  private REMOVE_EVENT_URL = 'http://localhost:8080/events/remove/';
 
   title: string;
   start: Date;
@@ -21,22 +20,28 @@ export class EventService {
   addFlag = false;
   changeFlag = false;
 
+  httpOptions = {
+    headers: new HttpHeaders({
+      Authorization: sessionStorage.getItem('token')
+    })
+  };
+
   constructor(private http: HttpClient) {}
 
   getAllEvents(): Observable<any[]> {
-    return this.http.get<any[]>(this.ALL_EVENTS_URL);
+    return this.http.get<any[]>(this.ALL_EVENTS_URL, this.httpOptions);
   }
 
   getEventById(id: string): Observable<any> {
-    return this.http.get<any>(this.ONE_EVENT_BY_ID_URL + id);
+    return this.http.get<any>(this.ONE_EVENT_BY_ID_URL + id, this.httpOptions);
   }
 
   addEvent(event: EventViewModel): Observable<any> {
-    return this.http.post(this.SAVE_EVENT_URL, event);
+    return this.http.post(this.SAVE_EVENT_URL, event, this.httpOptions);
   }
 
   removeEvent(id: string): Observable<any> {
-    return this.http.delete(this.REMOVE_EVENT_URL + id);
+    return this.http.delete(this.REMOVE_EVENT_URL + id, this.httpOptions);
   }
 
   getAddFlag(): boolean {

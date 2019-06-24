@@ -21,13 +21,20 @@ import {EventService} from './services/event.service';
 import {MatSelectModule} from '@angular/material/select';
 import {HttpClientModule} from '@angular/common/http';
 import {InputSwitchModule} from 'primeng/inputswitch';
+import { LoginComponent } from './login/login.component';
+import {LoginService} from './services/login.service';
+import { RegisterComponent } from './register/register.component';
+import { ConfirmPasswordDirective } from './directives/confirm-password.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     ModificationDialogComponent,
     SaveEventComponent,
-    CalendarComponent
+    CalendarComponent,
+    LoginComponent,
+    RegisterComponent,
+    ConfirmPasswordDirective
   ],
   imports: [
     BrowserModule,
@@ -50,7 +57,7 @@ import {InputSwitchModule} from 'primeng/inputswitch';
     HttpClientModule,
     InputSwitchModule
   ],
-  providers: [ConfirmationService, MessageService, EventService],
+  providers: [ConfirmationService, MessageService, EventService, LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

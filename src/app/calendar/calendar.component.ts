@@ -45,6 +45,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       defaultDate: new Date(),
       editable: true,
+      eventTextColor: 'white',
       header: {
         left: 'prev, today, next',
         center: 'title',

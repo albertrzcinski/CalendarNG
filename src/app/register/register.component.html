@@ -1,0 +1,82 @@
+<p-messages [value]="msgs"></p-messages>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-2 col-sm-2"></div>
+    <div class="col-md-8 col-sm-8 col-xs-12">
+      <form #f="ngForm" class="form-container" (submit)="f.form.valid && registerUser()">
+        <h4>Create an account</h4>
+        <br>
+        <div class="form-row">
+          <div class="col-md-6 mb-4">
+          <label for="usernameInput">
+            <i class="fa fa-user"></i> Username
+          </label>
+          <input type="text" class="form-control" id="usernameInput" name="usernameInput"
+                 [(ngModel)]="model.username" #usernameInput="ngModel" placeholder="Enter username"
+                 [ngClass]="{'is-invalid': f.submitted && usernameInput.invalid,
+                  'is-valid': f.submitted && usernameInput.valid}" required>
+
+          <div *ngIf="f.submitted && usernameInput.invalid" class="invalid-input">
+            <small *ngIf="usernameInput.errors?.required">This field is required</small>
+          </div>
+          </div>
+            <div class="col-md-6 mb-4">
+              <label for="emailInput">
+                <i class="fa fa-envelope"></i> E-mail
+              </label>
+              <input type="email" class="form-control" id="emailInput" name="emailInput"
+                     [(ngModel)]="model.email" #emailInput="ngModel" placeholder="Enter e-mail"
+                     [ngClass]="{'is-invalid': f.submitted && emailInput.invalid,
+                      'is-valid': f.submitted && emailInput.valid}" required email>
+
+              <div *ngIf="f.submitted && emailInput.invalid" class="invalid-input">
+                <small *ngIf="emailInput.errors?.required">This field is required</small>
+                <small *ngIf="emailInput.errors?.email">That does not look like a valid email address</small>
+              </div>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-md-6 mb-4">
+          <label for="passwordInput">
+            <i class="fa fa-key"></i> Password
+          </label>
+          <input type="password" class="form-control" id="passwordInput" name="passwordInput"
+                 [(ngModel)]="model.password" #passwordInput="ngModel" placeholder="Enter password"
+                 [ngClass]="{'is-invalid': f.submitted && passwordInput.invalid,
+                 'is-valid': f.submitted && passwordInput.valid}" required>
+
+          <div *ngIf="f.submitted && passwordInput.invalid" class="invalid-input">
+            <small *ngIf="passwordInput.errors?.required">This field is required</small>
+          </div>
+        </div>
+          <div class="col-md-6 mb-4">
+            <label for="repeatPasswordInput">
+              <i class="fa fa-key"></i> Repeat password
+            </label>
+            <input type="password" class="form-control" id="repeatPasswordInput" name="repeatPasswordInput"
+                   [(ngModel)]="repeatPassword" #repeatPasswordInput="ngModel" placeholder="Enter password"
+                   appConfirmPassword="passwordInput" [ngClass]="{'is-invalid': f.submitted && repeatPasswordInput.invalid,
+                   'is-valid': f.submitted && repeatPasswordInput.valid}" required>
+
+            <div *ngIf="f.submitted && repeatPasswordInput.invalid" class="invalid-input">
+              <small *ngIf="repeatPasswordInput.errors?.required">This field is required. </small>
+              <small *ngIf="!repeatPasswordInput.errors?.required
+               && repeatPasswordInput.errors?.notEqual">Password does not match.</small>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="form-row">
+          <div class="col-md-2"></div>
+          <div class="col-md-8">
+        <button type="submit" class="btn btn-success btn-block" style="color: white">Register</button>
+            <br>
+            <small><a routerLink="/login">Do you have account? Sign in.</a></small>
+          </div>
+          <div class="col-md-2"></div>
+        </div>
+      </form>
+    </div>
+  <div class="col-md-2 col-sm-2"></div>
+  </div>
+</div>

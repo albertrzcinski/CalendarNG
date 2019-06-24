@@ -54,6 +54,7 @@ export class ModificationDialogComponent implements OnInit {
         }, 5000);
       },
       err => {
+        this.display = false;
         this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while deleting event!'});
         setTimeout(() => {
           this.messageService.clear();
