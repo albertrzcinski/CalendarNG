@@ -1,4 +1,4 @@
-p, span{
+p, span:not(.navbar-brand, .navbar-text){
   font-size: 18px;
   font-family: 'Brie Serif', cursive;
 }
@@ -17,7 +17,7 @@ p, span{
   margin-top: 20px;
 }
 
-button {
+button:not(.btn) {
   margin-top: 50px;
   margin-left: 100px;
   margin-right: 100px;

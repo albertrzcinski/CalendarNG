@@ -7,7 +7,7 @@ import {EventViewModel} from '../save-event/save-event.component';
   providedIn: 'root'
 })
 export class EventService {
-  private ALL_EVENTS_URL = 'http://localhost:8080/events/all';
+  private ALL_EVENTS_URL = 'http://localhost:8080/events/byUser/';
   private ONE_EVENT_BY_ID_URL = 'http://localhost:8080/events/';
   private SAVE_EVENT_URL = 'http://localhost:8080/events/save';
   private REMOVE_EVENT_URL = 'http://localhost:8080/events/remove/';
@@ -20,27 +20,29 @@ export class EventService {
   addFlag = false;
   changeFlag = false;
 
-  httpOptions = {
-    headers: new HttpHeaders({
-      Authorization: sessionStorage.getItem('token')
-    })
-  };
+  httpOptions = {};
+
+  username = '';
 
   constructor(private http: HttpClient) {}
 
   getAllEvents(): Observable<any[]> {
-    return this.http.get<any[]>(this.ALL_EVENTS_URL, this.httpOptions);
+    this.getSessionData();
+    return this.http.get<any[]>(this.ALL_EVENTS_URL + this.username, this.httpOptions);
   }
 
   getEventById(id: string): Observable<any> {
+    this.getSessionData();
     return this.http.get<any>(this.ONE_EVENT_BY_ID_URL + id, this.httpOptions);
   }
 
   addEvent(event: EventViewModel): Observable<any> {
+    this.getSessionData();
     return this.http.post(this.SAVE_EVENT_URL, event, this.httpOptions);
   }
 
   removeEvent(id: string): Observable<any> {
+    this.getSessionData();
     return this.http.delete(this.REMOVE_EVENT_URL + id, this.httpOptions);
   }
 
@@ -58,5 +60,19 @@ export class EventService {
 
   setChangeFlag(value: boolean) {
     this.changeFlag = value;
+  }
+
+  getSessionData() {
+    if (sessionStorage.getItem('token') != null) {
+      this.httpOptions = {
+        headers: new HttpHeaders({
+          Authorization: sessionStorage.getItem('token')
+        })
+      };
+    }
+
+    if (sessionStorage.getItem('username') != null) {
+      this.username = sessionStorage.getItem('username');
+    }
   }
 }

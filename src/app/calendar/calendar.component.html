@@ -1,3 +1,10 @@
+<nav class="navbar navbar-light mb-3" style="background-color: #82b4eb">
+  <span class="navbar-brand mb-0 h1"><i class="fa fa-calendar"></i> Calendar</span>
+  <div *ngIf="model.username">
+  <span class="navbar-text mr-3 font-weight-bold"> Hello {{model.username}}!</span>
+    <button class="btn btn-outline-primary" type="button" (click)="logout()">Logout</button>
+  </div>
+</nav>
 <p-confirmDialog [style]="{width: '50vw'}" key="date"></p-confirmDialog>
 
 <app-modification-dialog #md></app-modification-dialog>

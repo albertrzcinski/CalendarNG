@@ -1,5 +1,13 @@
+<nav class="navbar navbar-light mb-3" style="background-color: #82b4eb">
+  <span class="navbar-brand mb-0 h1"><i class="fa fa-calendar"></i> Calendar</span>
+  <div *ngIf="model.username">
+    <span class="navbar-text mr-3 font-weight-bold"> Hello {{model.username}}!</span>
+    <button class="btn btn-outline-primary" type="button" (click)="logout()">Logout</button>
+  </div>
+</nav>
 <p-messages [value]="msgs"></p-messages>
-<form name="form" #f="ngForm" (submit)="f.form.valid && addEvent()" novalidate>
+
+  <form name="form" #f="ngForm" (submit)="f.form.valid && addEvent()" novalidate>
 <div class="main-div">
 <div>
   <input placeholder="Title" id="title" name="title" type="text" size="30" pInputText [(ngModel)]="model.title"
@@ -53,7 +61,6 @@
   </div>
 </div>
   <br>
-  <!-- TODO start from param to 2030 -->
   <p>To :</p>
   <p-spinner [inputStyle]="{'margin-left': '5px'}" size="10" [(ngModel)]="spinnerDayEnd"
              [min]="1" [max]="31" name="spinnerdaye"></p-spinner>

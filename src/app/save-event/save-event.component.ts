@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventService} from '../services/event.service';
 import {MessageService} from 'primeng/api';
+import {LoginService} from '../services/login.service';
 
 @Component({
   selector: 'app-save-event',
@@ -14,7 +15,8 @@ export class SaveEventComponent implements OnInit {
     id: null,
     title: '',
     start: '',
-    end: ''
+    end: '',
+    username: ''
   };
 
   param = '';
@@ -39,7 +41,13 @@ export class SaveEventComponent implements OnInit {
   checkedFlag = false;
 
   constructor(private route: ActivatedRoute, private eventService: EventService,
-              private router: Router, private messageService: MessageService) {}
+              private router: Router, private messageService: MessageService,
+              private loginService: LoginService) {
+
+    if (sessionStorage.getItem('username') != null) {
+      this.model.username = sessionStorage.getItem('username');
+    }
+  }
 
   setupComponent(someParam) {
     if (someParam.toString().search('-') === -1) {
@@ -180,6 +188,11 @@ export class SaveEventComponent implements OnInit {
   cancel() {
     this.router.navigateByUrl('/home');
   }
+
+  public logout() {
+    this.loginService.logoutUser();
+    this.router.navigateByUrl('/login');
+  }
 }
 
 export interface EventViewModel {
@@ -187,4 +200,5 @@ export interface EventViewModel {
   title: string;
   start: string;
   end: string;
+  username: string;
 }

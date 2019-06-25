@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
@@ -10,6 +10,7 @@ import {HttpClient} from '@angular/common/http';
 import {compareLogSummaries} from '@angular/core/src/render3/styling/class_and_style_bindings';
 import {callNgModuleLifecycle} from '@angular/core/src/view/ng_module';
 import {EventViewModel} from '../save-event/save-event.component';
+import {LoginService} from '../services/login.service';
 
 @Component({
   selector: 'app-calendar',
@@ -31,12 +32,19 @@ export class CalendarComponent implements OnInit, AfterViewInit {
     id: null,
     title: '',
     start: '',
-    end: ''
+    end: '',
+    username: ''
   };
 
   constructor(private confirmationService: ConfirmationService,
               private messageService: MessageService,
-              private router: Router, private  eventService: EventService) {}
+              private router: Router, private  eventService: EventService,
+              private loginService: LoginService) {
+
+    if (sessionStorage.getItem('username') != null) {
+      this.model.username = sessionStorage.getItem('username');
+    }
+  }
 
   ngOnInit() {
     this.getAllEvents();
@@ -126,7 +134,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
         setTimeout(() => {
           this.messageService.clear();
         }, 5000);
-    });
+      });
   }
 
   public saveEventChanging(event: any) {
@@ -150,4 +158,10 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       }
     );
   }
+
+  public logout() {
+    this.loginService.logoutUser();
+    this.router.navigateByUrl('/login');
+  }
 }
+
