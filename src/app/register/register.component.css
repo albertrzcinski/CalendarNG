@@ -7,6 +7,6 @@
   box-shadow: 0px 3px 20px 8px rgba(183,180,222,1);
 }
 
-small{
+small:not(.link){
   color: red;
 }

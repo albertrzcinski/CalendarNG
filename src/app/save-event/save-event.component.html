@@ -22,7 +22,6 @@
     <span style="margin-right: 20px">All day</span>
     <p-inputSwitch [(ngModel)]="checkedFlag" name="inputSwitch"></p-inputSwitch>
   </div>
-  <!-- TODO what if month not have 31 days (ngIF)-->
   <p>From :</p>
   <p-spinner [inputStyle]="{'margin-left': '5px'}"
              size="10" [(ngModel)]="spinnerDayStart" [min]="1" [max]="31" name="spinnerday"></p-spinner>

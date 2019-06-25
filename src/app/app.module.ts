@@ -25,6 +25,7 @@ import { LoginComponent } from './login/login.component';
 import {LoginService} from './services/login.service';
 import { RegisterComponent } from './register/register.component';
 import { ConfirmPasswordDirective } from './directives/confirm-password.directive';
+import {AuthGuardService} from './services/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,7 @@ import { ConfirmPasswordDirective } from './directives/confirm-password.directiv
     HttpClientModule,
     InputSwitchModule
   ],
-  providers: [ConfirmationService, MessageService, EventService, LoginService],
+  providers: [ConfirmationService, MessageService, EventService, LoginService, AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

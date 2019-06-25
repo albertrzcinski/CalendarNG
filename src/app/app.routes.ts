@@ -4,15 +4,17 @@ import {CalendarComponent} from './calendar/calendar.component';
 import {SaveEventComponent} from './save-event/save-event.component';
 import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
+import {AuthGuardService} from './services/auth-guard.service';
 
 const appRoutes: Routes = [
   {
     path: 'home',
-    component: CalendarComponent
+    component: CalendarComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
   },
   {
     path: 'register',
@@ -20,17 +22,17 @@ const appRoutes: Routes = [
   },
   {
     path: '',
-    // TODO redirect to login (check all redicection) [if user logged redirect to /home from /login] [if user not logged redirect to /login]
     redirectTo: '/home',
     pathMatch: 'full'
   },
-  /*{ path: '**',
-    // TODO create component for 404
-    component: AppComponent
-  },*/
   {
     path: 'save/:eventId',
-    component: SaveEventComponent
+    component: SaveEventComponent,
+    canActivate: [AuthGuardService]
+  },
+  { path: '**',
+    redirectTo: '/home',
+    pathMatch: 'full'
   }
 ];
 

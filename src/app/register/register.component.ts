@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {UserViewModel} from '../login/login.component';
 import {LoginService} from '../services/login.service';
 import {Router} from '@angular/router';
@@ -10,6 +10,8 @@ import {MessageService} from 'primeng/api';
   styleUrls: ['./register.component.css']
 })
 export class RegisterComponent implements OnInit {
+
+  @ViewChild('f') form;
 
   model: UserViewModel = {
     username: '',
@@ -26,7 +28,14 @@ export class RegisterComponent implements OnInit {
   public registerUser() {
     this.loginService.saveUser(this.model).subscribe(
       res => {
-        this.router.navigateByUrl('/login');
+        if (res != null) {
+          this.router.navigateByUrl('/login');
+        } else {
+          this.messageService.add({severity: 'error', summary: 'Error', detail: 'This username is already used!'});
+          setTimeout(() => {
+            this.messageService.clear();
+          }, 5000);
+        }
       },
       err => {
         this.messageService.add({severity: 'error', summary: 'Error', detail: 'Server is not responding!'});
