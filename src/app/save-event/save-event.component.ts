@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EventService} from '../services/event.service';
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {LoginService} from '../services/login.service';
 
 @Component({
@@ -42,7 +42,7 @@ export class SaveEventComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private eventService: EventService,
               private router: Router, private messageService: MessageService,
-              private loginService: LoginService) {
+              private loginService: LoginService, private confirmationService: ConfirmationService) {
 
     if (sessionStorage.getItem('username') != null) {
       this.model.username = sessionStorage.getItem('username');
@@ -173,7 +173,7 @@ export class SaveEventComponent implements OnInit {
             } else {
               this.eventService.setChangeFlag(true);
             }
-            this.router.navigateByUrl('/home');
+            this.emailConfirm();
           },
           err => {
             this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while saving event!'});
@@ -192,6 +192,36 @@ export class SaveEventComponent implements OnInit {
   public logout() {
     this.loginService.logoutUser();
     this.router.navigateByUrl('/login');
+  }
+
+  emailConfirm() {
+    this.confirmationService.confirm({
+      key: 'save',
+      message: 'Would you like to send reminder to your email ?',
+      header: 'Confirmation',
+      icon: 'pi pi-envelope',
+      accept: () => {
+        this.messageService.add({severity: 'info', summary: 'Sending', detail: 'The email is sent...'});
+        setTimeout(() => {
+          this.messageService.clear();
+        }, 8000);
+
+        this.eventService.sendEmail(this.model).subscribe(
+          res => {
+            this.router.navigateByUrl('/home');
+          },
+          err => {
+            this.messageService.add({severity: 'error', summary: 'Error', detail: 'An error while sending email!'});
+            setTimeout(() => {
+              this.messageService.clear();
+            }, 5000);
+          }
+        );
+      },
+      reject: () => {
+        this.router.navigateByUrl('/home');
+      }
+    });
   }
 }
 

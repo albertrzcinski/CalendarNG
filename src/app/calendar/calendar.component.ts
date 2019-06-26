@@ -54,6 +54,7 @@ export class CalendarComponent implements OnInit, AfterViewInit {
       defaultDate: new Date(),
       editable: true,
       eventTextColor: 'white',
+      // locale: 'pl',
       header: {
         left: 'prev, today, next',
         center: 'title',

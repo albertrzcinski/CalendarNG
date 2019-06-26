@@ -11,6 +11,7 @@ export class EventService {
   private ONE_EVENT_BY_ID_URL = 'http://localhost:8080/events/';
   private SAVE_EVENT_URL = 'http://localhost:8080/events/save';
   private REMOVE_EVENT_URL = 'http://localhost:8080/events/remove/';
+  private SEND_EMAIL_URL = 'http://localhost:8080/email/send';
 
   title: string;
   start: Date;
@@ -44,6 +45,11 @@ export class EventService {
   removeEvent(id: string): Observable<any> {
     this.getSessionData();
     return this.http.delete(this.REMOVE_EVENT_URL + id, this.httpOptions);
+  }
+
+  sendEmail(event: EventViewModel): Observable<any> {
+    this.getSessionData();
+    return this.http.post(this.SEND_EMAIL_URL, event, this.httpOptions);
   }
 
   getAddFlag(): boolean {
